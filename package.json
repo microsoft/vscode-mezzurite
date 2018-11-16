@@ -1,0 +1,54 @@
+{
+    "name": "mezzurite",
+    "displayName": "mezzurite-extension",
+    "description": "Vs code extension for Mezzurite",
+    "version": "1.0.0",
+    "publisher": "mezzurite-development",
+    "engines": {
+        "vscode": "^1.28.0"
+    },
+    "categories": [
+        "Snippets", "Other"
+    ],
+    "activationEvents": [
+        "*"
+    ],
+    "main": "./out/extension",
+    "contributes": {
+        "commands": [
+            {
+                "command": "extension.validateMezzurite",
+                "title": "Validate Mezzurite Configuration"
+            },
+            {
+                "command": "extension.displayLandingPage",
+                "title": "Mezzurite Extension Guide"
+            }
+        ],
+        "keybindings":[
+            {
+            "command": "extension.validateMezzurite",
+            "key": "ctrl+alt+m",
+            "mac": "ctrl+alt+m"
+            }	
+        ]
+    },
+    "scripts": {
+        "vscode:prepublish": "npm run compile",
+        "compile": "tsc -p ./",
+        "watch": "tsc -watch -p ./",
+        "postinstall": "node ./node_modules/vscode/bin/install",
+        "test": "npm run compile && node ./node_modules/vscode/bin/test"
+    },
+    "devDependencies": {
+        "typescript": "^2.6.1",
+        "vscode": "^1.1.21",
+        "tslint": "^5.8.0",
+        "@types/node": "^8.10.25",
+        "@types/mocha": "^2.2.42"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/Microsoft/vscode-mezzurite"
+    }
+}
