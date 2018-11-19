@@ -1,7 +1,7 @@
 # Mezzurite SDK Extension for Visual Studio Code
 This is just an initial base extension. We are working on to provide the features mentioned in the Roadmap section in near future.
 
-##Overview
+## Overview
 
 This plugin improves the Mezzurite SDK implementation experience.  The Mezzurite SDK provides a consistent way to collect performance metrics of Single Page Applications across a variety of frameworks. Learn more about Mezzurite by visiting our [GitHub Repository](https://github.com/Microsoft/Mezzurite)!
 
