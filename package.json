@@ -1,38 +1,40 @@
 {
     "name": "mezzurite",
-    "displayName": "mezzurite-extension",
-    "description": "Vs code extension for Mezzurite",
+    "displayName": "Mezzurite Extension",
+    "description": "Instrument your application with Mezzurite SDK quickly and easily with this extension.",
     "version": "1.0.0",
-    "publisher": "mezzurite-development",
+    "publisher": "mezzurite-devs",
+	"author": {
+        "name": "Microsoft Corporation"
+    },
     "engines": {
         "vscode": "^1.28.0"
     },
     "categories": [
         "Linters",
         "Snippets"
-        
     ],
     "activationEvents": [
         "*"
     ],
     "main": "./out/extension",
     "Mezzurite SDK Repository": "https://github.com/Microsoft/Mezzurite",
-	"bugs": {
-		"url": "https://github.com/Microsoft/vscode-mezzurite"
-	},
+    "bugs": {
+        "url": "https://github.com/Microsoft/vscode-mezzurite"
+    },
     "repository": {
         "type": "git",
         "url": "https://github.com/Microsoft/vscode-mezzurite"
     },
-    "Future Features" :"https://github.com/Microsoft/Mezzurite",
+    "Future Features": "https://github.com/Microsoft/Mezzurite",
     "license": "SEE LICENSE IN LICENSE",
     "keywords": [
-		"Microsoft",
-		"Angular",
-		"React",
-		"SPA",
-		"Single Page Application"
-	],
+        "Microsoft",
+        "Angular",
+        "React",
+        "SPA",
+        "Single Page Application"
+    ],
     "contributes": {
         "commands": [
             {
@@ -52,6 +54,7 @@
             }
         ]
     },
+	"icon": "icon.png",
     "scripts": {
         "vscode:prepublish": "npm run compile",
         "compile": "tsc -p ./",
