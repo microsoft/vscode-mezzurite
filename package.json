@@ -4,6 +4,9 @@
     "description": "Vs code extension for Mezzurite",
     "version": "1.0.0",
     "publisher": "mezzurite-development",
+    "author": {
+        "name": "Microsoft Corporation"
+    },
     "engines": {
         "vscode": "^1.28.0"
     },
@@ -26,6 +29,7 @@
     },
     "Future Features" :"https://github.com/Microsoft/Mezzurite",
     "license": "SEE LICENSE IN LICENSE",
+    "icon": "icon.png",
     "keywords": [
 		"Microsoft",
 		"Angular",
