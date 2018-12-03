@@ -73,8 +73,9 @@ export class LandingPage {
      /**
      * Returns the absolute path to a file located in our misc folder.
      *
-     * @param file The base file name.
-     * @param context The context of this extension to get its path regardless where it is installed.
+     * @param file: The base file name.
+     * @param asResource: a boolean flag to know whether its html or css file and to add the 'vscode-resource' scheme.
+     *                    vscode-resource: loads a resource at a given absolute path from the disk.
      */
     public getMiscPath(file: string, asResource: boolean): string {
         if (asResource) {
