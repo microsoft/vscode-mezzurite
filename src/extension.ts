@@ -2,8 +2,6 @@
 import * as vscode from 'vscode';
 import { window, commands} from 'vscode';
 import {LandingPage} from './landing-page';
-import {MezzuriteDependency} from './verify-mezzurite-dependency';
-import {ExecuteMezzuriteFrameworkRules} from './execute-mezzurite-framework-rules';
 import {ExtensionConstants} from './extension-constants';
 
 // this method is called when your extension is activated
@@ -16,12 +14,9 @@ export async function activate(context: vscode.ExtensionContext) {
 
     // Check if mezzurite dependency is found or not
     // This will be done by parsing the application's package.json file or searching for mezzuite-framework in node_modules folder
-    var mezzuriteDependency: any = await mezzuriteExtension.verifyMezzurite();
-    if(mezzuriteDependency){
+    var mezzuriteFound = mezzuriteExtension.verifyMezzurite();
+    if(mezzuriteFound){
         mezzuriteExtension.displayLandingPage(context);
-        let validateMezzuriteFramework = new ExecuteMezzuriteFrameworkRules(mezzuriteDependency.name, mezzuriteDependency.version);
-        let ruleResults = await validateMezzuriteFramework.executeRules();
-        console.log(ruleResults);
     }
 
     // Command for validate mezzurite on current workspace
@@ -67,8 +62,9 @@ class MezzuriteExtension{
      *
      * @return true if found
      */
-    public async verifyMezzurite(){
-        let mezzuriteDependency = new MezzuriteDependency();
-        return await mezzuriteDependency.verifyMezzuriteDependency();
+    public verifyMezzurite(){
+        // This is just to test the base extension
+        console.log('Mezzurite framework found!');
+        return true;
     }
 }
