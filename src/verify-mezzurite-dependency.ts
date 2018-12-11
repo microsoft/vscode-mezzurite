@@ -1,7 +1,7 @@
 import {window, workspace} from 'vscode';
 import * as fs from "fs";
-import {ExtensionConstants} from './extension-constants';
-import {MezzuriteUtils} from './mezzurite-utils';
+import {ExtensionConstants} from './constants/extension-constants';
+import {MezzuriteUtils} from './utils/mezzurite-utils';
 
 export class MezzuriteDependency {
 
@@ -29,12 +29,12 @@ export class MezzuriteDependency {
      * @return If found, returns the mezzurite framework name and version in an object, otherwise, undefined.
      */
     static async searchInPackageJsonFile(){
-        var packageJsonFile = await MezzuriteUtils.searchWorkspace(workspace, ExtensionConstants.pathForAppsPackageJson, ExtensionConstants.pathForNodeModules);
-        if(packageJsonFile.length < 1){
+        var packageJsonFiles = await MezzuriteUtils.searchWorkspace(workspace, ExtensionConstants.pathForAppsPackageJson, ExtensionConstants.pathForNodeModules);
+        if(packageJsonFiles.length < 1){
             console.log('Applications package.json file not found in the current workspace.');
             return undefined;
         }
-        return MezzuriteDependency.parsePackageJsonContents(packageJsonFile);
+        return MezzuriteDependency.parsePackageJsonContents(packageJsonFiles);
     }
 
     /**
@@ -42,28 +42,26 @@ export class MezzuriteDependency {
      * @param packageJsonFile.json file path object
      * @return Returns the mezzurite framework name and version in an object, otherwise, undefined.
      */
-    static parsePackageJsonContents(packageJsonFile: any){
+    static parsePackageJsonContents(packageJsonFiles: any){
         let mezzuriteDependency: any = undefined;
 
-        // read application's package.json contents
-        let data: any = MezzuriteUtils.readFileFromWorkspace(packageJsonFile[0].fsPath, 'utf8');
-        
-        // Get the package.json Object
-        let packageJsonObj = JSON.parse(data);
-        // Search in dependencies object in package.json file
-        mezzuriteDependency = this.getMezzuriteDependency(packageJsonObj.dependencies);
+        for(var i=0;i < packageJsonFiles.length; i++){
+            // read application's package.json contents
+            let data: any = MezzuriteUtils.readFileFromWorkspace(packageJsonFiles[i].fsPath, 'utf8');
+            
+            // Get the package.json Object
+            let packageJsonObj = JSON.parse(data);
 
-        if(mezzuriteDependency === undefined){
+            // Search in dependencies object in package.json file
+            mezzuriteDependency = this.getMezzuriteDependency(packageJsonObj.dependencies);
 
             // Search in devDependencies object in package.json file
-            mezzuriteDependency = this.getMezzuriteDependency(packageJsonObj.devDependencies);
-
-            if(mezzuriteDependency === undefined){
-                return mezzuriteDependency; // Mezzurite framework dependency is not found in package.json file
+            mezzuriteDependency = mezzuriteDependency !== undefined? mezzuriteDependency : this.getMezzuriteDependency(packageJsonObj.devDependencies);
+            if(mezzuriteDependency !== undefined){
+                return mezzuriteDependency;
             }
         }
-
-        window.showInformationMessage('Mezzurite framework configured is '+ mezzuriteDependency.name + ' and version is '+ mezzuriteDependency.version);
+        
         return mezzuriteDependency;
     }
 
@@ -126,7 +124,6 @@ export class MezzuriteDependency {
 
         // If mezzurite dependency found, then get the mezzurite-frameworkName and version
         if(mezzuFrameworkName !== undefined){
-
             var mzzFrameworksPackageJsonPath = '**'+ ExtensionConstants.mezzuritePath + mezzuFrameworkName +'/package.json';
 
             // If mezzurite framework found inside node modules directory 
@@ -134,13 +131,12 @@ export class MezzuriteDependency {
             // This will help to identify the which version of mezzurite-frameworkName is used by the application
             // It can be:- 1. angularjs, 2. angular (version = 1.0.x for Angular 2-5 and version = 2.0.x for Angular 6) or 3. react
             let files: any = await MezzuriteUtils.searchWorkspace(workspace, mzzFrameworksPackageJsonPath, '');
-
+            
             // read framework's package.json contents
             let data: any = MezzuriteUtils.readFileFromWorkspace(files[0].fsPath, 'utf8');
-
             let obj = JSON.parse(data);
-
-            // @TODO:Shud be removed before final checkin
+            
+            // @TODO:This would be removed
             window.showInformationMessage('Mezzurite framework configured is '+ obj.name + ' and version is '+ obj.version);
             return this.getDependencyDetails(obj.name, obj.version);
         }

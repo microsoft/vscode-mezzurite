@@ -1,13 +1,15 @@
-import {ExtensionConstants} from './extension-constants';
-import {MezzuriteAngularV1} from './mezzurite-angular-version1';
+import {ExtensionConstants} from './constants/extension-constants';
+import {MezzuriteAngularV1} from './frameworks/mezzurite-angular';
 
 export class ExecuteMezzuriteFrameworkRules {
     private frameworkName: string;
     private frameworkversion: number;
+    private filePath: any;
   
-    constructor(name: string, health: number) {
+    constructor(name: string, version: number, filePath: any) {
       this.frameworkName = name;
-      this.frameworkversion = health;
+      this.frameworkversion = version;
+      this.filePath = filePath;
     }
   
     async executeRules() {
@@ -16,7 +18,7 @@ export class ExecuteMezzuriteFrameworkRules {
             case ExtensionConstants.mezzuriteAngularJs:
             break;
             case ExtensionConstants.mezzuriteAngular:
-                mezzuriteFramework = new MezzuriteAngularV1();
+                mezzuriteFramework = new MezzuriteAngularV1(this.filePath);
             break;
             case ExtensionConstants.mezzuriteReact:
             break;
@@ -26,6 +28,6 @@ export class ExecuteMezzuriteFrameworkRules {
     }
   }
   
-  export function ValidateRules(name: string, version: number) {
-    return new ExecuteMezzuriteFrameworkRules(name, version);
+  export function ValidateRules(name: string, version: number, filePath: any) {
+    return new ExecuteMezzuriteFrameworkRules(name, version, filePath);
   }

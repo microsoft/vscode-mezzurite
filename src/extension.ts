@@ -1,74 +1,77 @@
 'use strict';
 import * as vscode from 'vscode';
-import { window, commands} from 'vscode';
-import {LandingPage} from './landing-page';
-import {MezzuriteDependency} from './verify-mezzurite-dependency';
-import {ExecuteMezzuriteFrameworkRules} from './execute-mezzurite-framework-rules';
-import {ExtensionConstants} from './extension-constants';
+import {commands} from 'vscode';
+import {ExtensionConstants, CommandConstants} from './constants/extension-constants';
+import {MezzuriteExtension} from './mezzurite-extension-main';
 
-// this method is called when your extension is activated
-// extension is activated depending on the activation events specified in the package.json file
-// We can also activate an extension on commands which needs to be configured in package.sjon file
+/* This method is called when your extension is activated
+*  extension is activated depending on the activation events specified in the package.json file
+*  We can also activate an extension on commands which needs to be configured in package.json file
+*/
 export async function activate(context: vscode.ExtensionContext) { 
-
     // create a new Mezzurite extension
     let mezzuriteExtension = new MezzuriteExtension();
 
     // Check if mezzurite dependency is found or not
-    // This will be done by parsing the application's package.json file or searching for mezzuite-framework in node_modules folder
     var mezzuriteDependency: any = await mezzuriteExtension.verifyMezzurite();
     if(mezzuriteDependency){
         mezzuriteExtension.displayLandingPage(context);
-        let validateMezzuriteFramework = new ExecuteMezzuriteFrameworkRules(mezzuriteDependency.name, mezzuriteDependency.version);
-        let ruleResults = await validateMezzuriteFramework.executeRules();
-        console.log(ruleResults);
     }
 
+    // Check for marked and unmarked components and modules
+    let ruleResults = await mezzuriteExtension.executeMezzuriteRules(mezzuriteDependency, undefined);
+
     // Command for validate mezzurite on current workspace
-    let validateMezzurite = commands.registerCommand( ExtensionConstants.validateMezzuriteCommand, () => {
-        window.showInformationMessage('Mezzurite Extension is activated.');
+    let validateMezzurite = commands.registerCommand( CommandConstants.validateMezzuriteCommand, async () => {
+        let updatedResults = await mezzuriteExtension.executeMezzuriteRules(mezzuriteDependency, undefined);
+        mezzuriteExtension.displayComponentsTreeView(updatedResults, context);
     });
 
+    // Display components treeview
+    mezzuriteExtension.displayComponentsTreeView(ruleResults, context);
+    
+    // Display modules treeview
+    mezzuriteExtension.displayModulesTreeView(ruleResults, context);
+
+    vscode.workspace.onDidSaveTextDocument(async (document) => {
+        if(document.languageId === ExtensionConstants.typescript){
+            let updatedResults = await mezzuriteExtension.executeMezzuriteRules(mezzuriteDependency, document.fileName);
+            updatedResults = mezzuriteExtension.mergeResultsAfterSave(ruleResults, updatedResults);
+            mezzuriteExtension.displayComponentsTreeView(updatedResults, context);
+        }
+        else if(document.languageId === ExtensionConstants.html){
+            // @TODO: This is in progress
+            // Check if that html file is present inside oldResults.listOfComponents and verifying the 'templateUrl' property
+        }
+      });
+
     // Command for displaying the landing page
-    let landingPageCommand = commands.registerCommand( ExtensionConstants.displayLandingPageCommand, () => {
+    let landingPageCommand = commands.registerCommand( CommandConstants.displayLandingPageCommand, () => {
         mezzuriteExtension.displayLandingPage(context);
     });
 
+    // Command for selecting a node in components tree view
+    let componentsTreeView = commands.registerCommand(CommandConstants.trackComponentCommand, (item: any) => {
+        vscode.workspace.openTextDocument(item.path).then(doc => {
+            vscode.window.showTextDocument(doc);
+         });
+    });
+
+    // Command for selecting a node in components tree view
+    let modulesTreeView = commands.registerCommand(CommandConstants.trackModuleCommand, (item: any) => {
+        vscode.workspace.openTextDocument(item.path).then(doc => {
+            vscode.window.showTextDocument(doc);
+         });
+    });
+
+
     context.subscriptions.push(validateMezzurite);
     context.subscriptions.push(landingPageCommand);
-
+    context.subscriptions.push(componentsTreeView);
+    context.subscriptions.push(modulesTreeView);
+    
 }// activate() function
 
-// this method is called when your extension is deactivated
+// This method is called when your extension is deactivated
 export function deactivate() {
-}
-
-/**
- * Mezzurite extension class
- * After the extension is activated, this class will verify the mezzurite-framework dependency and then, it will display the welcome page
- * Also, it will run the mezzurite validation rules to look for marked and un-marked components specific to the mezzurite-framework dependency
- */
-class MezzuriteExtension{
-    
-    constructor() { }
-
-    /**
-     * Display the welcome page after the extension is activated
-     *
-     * @param context The context of this extension to get its path regardless where it is installed.
-     */
-    public displayLandingPage(context: any){
-        let landingPage = new LandingPage(context);
-        return landingPage.displayLandingPage();
-    }
-
-    /**
-     * This method verifies whether a mezzurite-framework dependency is found or not
-     *
-     * @return true if found
-     */
-    public async verifyMezzurite(){
-        let mezzuriteDependency = new MezzuriteDependency();
-        return await mezzuriteDependency.verifyMezzuriteDependency();
-    }
 }

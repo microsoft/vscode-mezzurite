@@ -1,9 +1,9 @@
 {
     "name": "mezzurite",
-    "displayName": "mezzurite-extension",
+    "displayName": "Microsoft",
     "description": "Vs code extension for Mezzurite",
-    "version": "1.0.0",
-    "publisher": "mezzurite-development",
+    "version": "1.0.1",
+    "publisher": "mezzurite-devs",
     "author": {
         "name": "Microsoft Corporation"
     },
@@ -13,31 +13,54 @@
     "categories": [
         "Linters",
         "Snippets"
-        
     ],
     "activationEvents": [
         "*"
     ],
     "main": "./out/extension",
     "Mezzurite SDK Repository": "https://github.com/Microsoft/Mezzurite",
-	"bugs": {
-		"url": "https://github.com/Microsoft/vscode-mezzurite"
-	},
+    "bugs": {
+        "url": "https://github.com/Microsoft/vscode-mezzurite"
+    },
     "repository": {
         "type": "git",
         "url": "https://github.com/Microsoft/vscode-mezzurite"
     },
-    "Future Features" :"https://github.com/Microsoft/Mezzurite",
+    "Future Features": "https://github.com/Microsoft/Mezzurite",
     "license": "SEE LICENSE IN LICENSE",
     "icon": "icon.png",
     "keywords": [
-		"Microsoft",
-		"Angular",
-		"React",
-		"SPA",
-		"Single Page Application"
-	],
+        "Microsoft",
+        "Angular",
+        "React",
+        "SPA",
+        "Single Page Application"
+    ],
     "contributes": {
+        "menus": {
+            "view/item/context": [
+                {
+                    "command": "extension.trackComponent",
+                    "when": "view == componentsTreeView"
+                },
+                {
+                    "command": "extension.trackModule",
+                    "when": "view == modulesTreeView"
+                }
+            ]
+        },
+        "views": {
+            "explorer": [
+                {
+                    "id": "componentsTreeView",
+                    "name": "Mezzurite Component Tracking"
+                },
+                {
+                    "id": "modulesTreeView",
+                    "name": "Mezzurite Module Tracking"
+                }
+            ]
+        },
         "commands": [
             {
                 "command": "extension.validateMezzurite",
@@ -46,9 +69,17 @@
             {
                 "command": "extension.displayLandingPage",
                 "title": "Mezzurite Extension Guide"
+            },
+            {
+                "command": "extension.trackComponent",
+                "title": "Track Component"
+            },
+            {
+                "command": "extension.trackModule",
+                "title": "Track Module"
             }
         ],
-        "keybindings": [
+        "Keybindings": [
             {
                 "command": "extension.validateMezzurite",
                 "key": "ctrl+alt+m",
@@ -64,14 +95,17 @@
         "test": "npm run compile && node ./node_modules/vscode/bin/test"
     },
     "devDependencies": {
-        "typescript": "^2.6.1",
-        "vscode": "^1.1.21",
-        "tslint": "^5.8.0",
+        "@types/mocha": "^2.2.42",
         "@types/node": "^8.10.25",
-        "@types/mocha": "^2.2.42"
+        "tslint": "^5.8.0",
+        "typescript": "^2.9.2",
+        "vscode": "^1.1.21"
     },
     "dependencies": {
+        "color": "^3.1.0",
+        "colors": "^1.3.2",
         "eslint": "^5.9.0",
-        "typescript-parser": "^2.6.1"
+        "reflect-metadata": "^0.1.12",
+        "ts-simple-ast": "^19.1.0"
     }
 }
