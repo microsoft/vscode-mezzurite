@@ -324,7 +324,6 @@ export class MezzuriteAngularV1{
             var found = await MezzuriteAngularV1.parseExternalHTMLFile(fileName);
             if(found){
                 componentObject.status = ExtensionConstants.marked;
-                componentObject.htmlFileName = fileName;
             }
         }
     }
@@ -355,7 +354,6 @@ export class MezzuriteAngularV1{
             status: ExtensionConstants.unmarked,
             template: "",
             templateUrl: "",
-            htmlFileName: ""
         };
         return componentObject;
     }
