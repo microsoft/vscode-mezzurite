@@ -1,7 +1,7 @@
 {
     "name": "mezzurite",
     "displayName": "Microsoft",
-    "description": "Vs code extension for Mezzurite",
+    "description": "Instrument your application with Mezzurite SDK quickly and easily with this extension.",
     "version": "1.0.1",
     "publisher": "mezzurite-devs",
     "author": {
@@ -87,6 +87,7 @@
             }
         ]
     },
+	"icon": "icon.png",
     "scripts": {
         "vscode:prepublish": "npm run compile",
         "compile": "tsc -p ./",
