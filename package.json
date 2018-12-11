@@ -4,7 +4,7 @@
     "description": "Instrument your application with Mezzurite SDK quickly and easily with this extension.",
     "version": "1.0.0",
     "publisher": "mezzurite-devs",
-	"author": {
+	  "author": {
         "name": "Microsoft Corporation"
     },
     "engines": {
@@ -28,6 +28,7 @@
     },
     "Future Features": "https://github.com/Microsoft/Mezzurite",
     "license": "SEE LICENSE IN LICENSE",
+    "icon": "icon.png",
     "keywords": [
         "Microsoft",
         "Angular",
