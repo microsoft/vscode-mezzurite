@@ -2,7 +2,7 @@ import * as vscode from 'vscode';
 import {window, Uri, ExtensionContext} from 'vscode';
 import * as fs from "fs";
 import * as path from "path";
-import {ExtensionConstants} from './extension-constants';
+import {ExtensionConstants} from './constants/extension-constants';
 
 export class LandingPage {
     
@@ -24,7 +24,7 @@ export class LandingPage {
         } else {
             // Otherwise, create a new panel
             this.currentPanel = window.createWebviewPanel(
-                'reactLandingPage', // Identifies the type of the webview. Used internally
+                'mezzuriteLandingPage', // Identifies the type of the webview. Used internally
                 ExtensionConstants.titleForWelcomePage, // Title of the panel displayed to the user
                 columnToShowIn, // Editor column to show the new webview panel in.
                 { 

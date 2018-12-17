@@ -1,10 +1,10 @@
 {
     "name": "mezzurite",
-    "displayName": "Mezzurite Extension",
+    "displayName": "Microsoft",
     "description": "Instrument your application with Mezzurite SDK quickly and easily with this extension.",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "publisher": "mezzurite-devs",
-	  "author": {
+    "author": {
         "name": "Microsoft Corporation"
     },
     "engines": {
@@ -37,6 +37,30 @@
         "Single Page Application"
     ],
     "contributes": {
+        "menus": {
+            "view/item/context": [
+                {
+                    "command": "extension.trackComponent",
+                    "when": "view == componentsTreeView"
+                },
+                {
+                    "command": "extension.trackModule",
+                    "when": "view == modulesTreeView"
+                }
+            ]
+        },
+        "views": {
+            "explorer": [
+                {
+                    "id": "componentsTreeView",
+                    "name": "Mezzurite Component Tracking"
+                },
+                {
+                    "id": "modulesTreeView",
+                    "name": "Mezzurite Module Tracking"
+                }
+            ]
+        },
         "commands": [
             {
                 "command": "extension.validateMezzurite",
@@ -45,9 +69,17 @@
             {
                 "command": "extension.displayLandingPage",
                 "title": "Mezzurite Extension Guide"
+            },
+            {
+                "command": "extension.trackComponent",
+                "title": "Track Component"
+            },
+            {
+                "command": "extension.trackModule",
+                "title": "Track Module"
             }
         ],
-        "keybindings": [
+        "Keybindings": [
             {
                 "command": "extension.validateMezzurite",
                 "key": "ctrl+alt+m",
@@ -64,14 +96,17 @@
         "test": "npm run compile && node ./node_modules/vscode/bin/test"
     },
     "devDependencies": {
-        "typescript": "^2.6.1",
-        "vscode": "^1.1.21",
-        "tslint": "^5.8.0",
+        "@types/mocha": "^2.2.42",
         "@types/node": "^8.10.25",
-        "@types/mocha": "^2.2.42"
+        "tslint": "^5.8.0",
+        "typescript": "^2.9.2",
+        "vscode": "^1.1.21"
     },
     "dependencies": {
+        "color": "^3.1.0",
+        "colors": "^1.3.2",
         "eslint": "^5.9.0",
-        "typescript-parser": "^2.6.1"
+        "reflect-metadata": "^0.1.12",
+        "ts-simple-ast": "^19.1.0"
     }
 }
