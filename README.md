@@ -1,22 +1,31 @@
-# Mezzurite SDK Extension for Visual Studio Code
+<h1 align="center">
+  <br>
+    <img src="https://github.com/Microsoft/vscode-mezzurite/blob/master/icon.png?raw=true" alt="logo" width="200">
+  <br>
+  Mezzurite SDK Extension for Visual Studio Code
+  <br>
+  <br>
+</h1>
 
 This plugin improves the Mezzurite SDK implementation experience.  The Mezzurite SDK provides a consistent way to collect performance metrics of Single Page Applications across a variety of frameworks. Learn more about Mezzurite by visiting our [GitHub Repository](https://github.com/Microsoft/Mezzurite)!
 
-## Fetaures
+## Features
  
- ### Components Tracking
+ #### Components Tracking
  Displaying the marked and unmarked components for performance tracking from the application code currently active in editor workspace.
 
- ###  Modules Tracking
+ ####  Modules Tracking
  Displaying the modules configured with mezzurite performance markers to capture ALT and VLT for the application code currently active in editor workspace.
- 
+
+ ![Demo](https://github.com/Microsoft/vscode-mezzurite/blob/master/resources/demo.gif?raw=true)
+
 ## RoadMap
 We are working on to provide the following features:-
  
- ### Intellisense and autocomplete
+ #### Intellisense and autocomplete
  Suggestion are provided for mezzurite syntaxes while typing imports and other mezzurite syntaxes. Code completion would be performed automatically while hitting Ctrl+Space on specific syntaxes.
  
- ### Verifying Loggers
+ #### Verifying Loggers
  This feature verifies whether logging options for captured metrics is enabled or not. This also provides suggestions on required mandatory properties in logging config.
 
 
