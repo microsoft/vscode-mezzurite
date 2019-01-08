@@ -17,8 +17,9 @@ This plugin improves the Mezzurite SDK implementation experience.  The Mezzurite
  ####  Modules Tracking
  Displaying the modules configured with mezzurite performance markers to capture ALT and VLT for the application code currently active in editor workspace.
 
+ ##### Demo
  ![Demo](https://github.com/Microsoft/vscode-mezzurite/blob/master/resources/demo.gif?raw=true)
-
+ 
 ## RoadMap
 We are working on to provide the following features:-
  
@@ -35,11 +36,14 @@ This extension will be Activated automatically for the active workspace in vs co
 
 ## Installation
 
-To install, click on the "Install" button above and open with visual studio code, which will bring up the Extensions view in the editor . 
+To install, click on the "Install" button above and open with visual studio code, which will bring up the Extensions view in the editor.
 
 You can also reach to this page by clicking on the Extensions icon in the Activity Bar on the side of VS Code or the command Ctrl+Shift+X and typing "mezzurite" keyword in the search bar.
 
 After a successful install, you'll see a Reload button. Clicking on this will restart VS Code to enable the extension.
+
+## Limitations
+Currently tracking Components and Modules feature is only supported for mezzurite-angular framework.
 
 ## Contributing
 
