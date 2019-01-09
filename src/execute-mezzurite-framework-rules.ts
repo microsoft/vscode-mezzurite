@@ -1,5 +1,6 @@
 import {ExtensionConstants} from './constants/extension-constants';
 import {MezzuriteAngularV1} from './frameworks/mezzurite-angular';
+import {MezzuriteUtils} from './utils/mezzurite-utils';
 
 export class ExecuteMezzuriteFrameworkRules {
     private frameworkName: string;
@@ -24,7 +25,10 @@ export class ExecuteMezzuriteFrameworkRules {
             break;
             default: console.log('Mezzurite framework name '+ this.frameworkName + ' or version '+ this.frameworkversion +' is invalid!');
         }
-        return await mezzuriteFramework.executeFrameworkSpecificRules();
+        if(mezzuriteFramework){
+            return await mezzuriteFramework.executeFrameworkSpecificRules();
+        }
+        return MezzuriteUtils.createOutputObject([], []);
     }
   }
   

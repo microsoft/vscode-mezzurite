@@ -28,13 +28,13 @@ export class ModulesProvider implements vscode.TreeDataProvider<ModuleItem> {
 	
 	private getTitleForUnmarkedModules(moduleObject: any){
 		var title = "";
-		if(moduleObject.importStmt){
+		if(!moduleObject.importStmt){
 			title = title + TreeviewTitleConstants.missingMezzuImport;
 		}
-		if(moduleObject.forRoot){
+		if(!moduleObject.forRoot){
 			title = title + TreeviewTitleConstants.missingMezzuForRoot;
 		}
-		if(moduleObject.routerStart){
+		if(!moduleObject.routerStart){
 			title = title + TreeviewTitleConstants.missingMezzuStart;						
 		}
 		return title;
@@ -77,7 +77,19 @@ export class ModulesProvider implements vscode.TreeDataProvider<ModuleItem> {
             }
 
             return moduleItems;
-        } 
+        }
+		else{
+			var message = new ModuleItem(ExtensionConstants.modulesNotFound, ExtensionConstants.notFoundId, "", ExtensionConstants.githubRepo,
+				vscode.TreeItemCollapsibleState.None);
+				message.command =  {
+					command: CommandConstants.trackModuleCommand,
+					title: '',
+					arguments: [message]
+				};
+				
+				moduleItems.push(message);
+			return moduleItems;
+		}
 
 		return [];
 	}
@@ -101,7 +113,7 @@ export class ModuleItem extends vscode.TreeItem {
 	}
 
 	get description(): string {
-		return this.label;
+		return "";
     }
     
     get pathName(): string {

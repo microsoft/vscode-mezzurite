@@ -6,6 +6,7 @@ const ExtensionConstants = {
      pathForAppsPackageJson : "**/package.json",
      pathForNodeModules : "**/node_modules/**",
      pathForTypescriptFiles : "**/*.ts",
+     pathForHtmlFiles : "**/*.html",
      titleForWelcomePage : "Mezzurite Extension",
      placeholderForStyleTag : "##StyleLink##",
      webviewStyleName : "style.css",
@@ -39,18 +40,26 @@ const ExtensionConstants = {
      mezzuriteAngularJs:"@microsoft/mezzurite-angularjs",
      mezzuriteAngular:"@microsoft/mezzurite-angular",
      mezzuriteReact:"@microsoft/mezzurite-react",
+
+     componentsNotFound: "No components found!",
+     modulesNotFound: "No modules found!",
+     notFoundId:"NotFound",
+     githubRepo:"Click here to visit out Github Repository!",
+     mezzuGithubUrl:"https://github.com/Microsoft/Mezzurite"
+
 }
 
 const CommandConstants = {
      validateMezzuriteCommand : "extension.validateMezzurite",
      displayLandingPageCommand : "extension.displayLandingPage",
      trackComponentCommand: "componentTreeView.selectNode",
-     trackModuleCommand:"moduleTreeView.selectNode"
+     trackModuleCommand:"moduleTreeView.selectNode",
+     openUrl:"vscode.open"
 }
 
 const TreeviewTitleConstants = {
      markedComponent:"This component is marked for performance tracking.",
-     unmarkedComponent:"Missing 'mezzurite' directive. Missing 'component-title' directive.",
+     unmarkedComponent:"Missing 'mezzurite' and 'component-title' directive.",
      markedModule:"This module is marked for performance tracking.",
      missingMezzuImport:"Missing mezzurite import declaration.",
      missingMezzuForRoot:"Missing AngularPerfModule.forRoot() statement.",
