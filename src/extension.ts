@@ -11,6 +11,10 @@ import {MezzuriteExtension} from './mezzurite-extension-main';
 export async function activate(context: vscode.ExtensionContext) { 
     // create a new Mezzurite extension
     let mezzuriteExtension = new MezzuriteExtension();
+        
+    // Create file system watcher for .ts and .html files
+    let tsFileSystemWatcher = vscode.workspace.createFileSystemWatcher(ExtensionConstants.pathForTypescriptFiles, false, true, false);
+    let htmlFileSystemWatcher = vscode.workspace.createFileSystemWatcher(ExtensionConstants.pathForHtmlFiles, false, true, false);
 
     // Check if mezzurite dependency is found or not
     var mezzuriteDependency: any = await mezzuriteExtension.verifyMezzurite();
@@ -25,6 +29,7 @@ export async function activate(context: vscode.ExtensionContext) {
     let validateMezzurite = commands.registerCommand( CommandConstants.validateMezzuriteCommand, async () => {
         let updatedResults = await mezzuriteExtension.executeMezzuriteRules(mezzuriteDependency, undefined);
         mezzuriteExtension.displayComponentsTreeView(updatedResults, context);
+        mezzuriteExtension.displayModulesTreeView(updatedResults, context);
     });
 
     // Display components treeview
@@ -33,17 +38,25 @@ export async function activate(context: vscode.ExtensionContext) {
     // Display modules treeview
     mezzuriteExtension.displayModulesTreeView(ruleResults, context);
 
+    // Command for On Save of a .ts or .html file
     vscode.workspace.onDidSaveTextDocument(async (document) => {
         if(document.languageId === ExtensionConstants.typescript){
-            let updatedResults = await mezzuriteExtension.executeMezzuriteRules(mezzuriteDependency, document.fileName);
-            updatedResults = mezzuriteExtension.mergeResultsAfterSave(ruleResults, updatedResults);
-            mezzuriteExtension.displayComponentsTreeView(updatedResults, context);
+            ruleResults = await mezzuriteExtension.onEditOrCreateTsFile(ruleResults, mezzuriteDependency, document.fileName, context);
         }
         else if(document.languageId === ExtensionConstants.html){
-            // @TODO: This is in progress
-            // Check if that html file is present inside oldResults.listOfComponents and verifying the 'templateUrl' property
+            ruleResults = await mezzuriteExtension.onEditOrCreateHtmlFile(ruleResults, document.fileName, context);
         }
-      });
+    });
+
+    // Command for On Delete of a .ts file
+    tsFileSystemWatcher.onDidDelete(async function(e){
+        ruleResults = await mezzuriteExtension.onDeleteTsFile(ruleResults, e.fsPath, context);
+    });
+    
+    // Command for On Delete of a .html file
+    htmlFileSystemWatcher.onDidDelete(async function(e){
+        ruleResults = await mezzuriteExtension.onDeleteHtmlFile(ruleResults, e.fsPath, context);
+    });
 
     // Command for displaying the landing page
     let landingPageCommand = commands.registerCommand( CommandConstants.displayLandingPageCommand, () => {
@@ -52,18 +65,27 @@ export async function activate(context: vscode.ExtensionContext) {
 
     // Command for selecting a node in components tree view
     let componentsTreeView = commands.registerCommand(CommandConstants.trackComponentCommand, (item: any) => {
-        vscode.workspace.openTextDocument(item.path).then(doc => {
-            vscode.window.showTextDocument(doc);
-         });
+        if(item.path === ExtensionConstants.notFoundId){
+            vscode.commands.executeCommand(CommandConstants.openUrl, vscode.Uri.parse(ExtensionConstants.mezzuGithubUrl))
+        }
+        else{
+            vscode.workspace.openTextDocument(item.path).then(doc => {
+                vscode.window.showTextDocument(doc);
+            });
+        }
     });
 
-    // Command for selecting a node in components tree view
+    // Command for selecting a node in modules tree view
     let modulesTreeView = commands.registerCommand(CommandConstants.trackModuleCommand, (item: any) => {
-        vscode.workspace.openTextDocument(item.path).then(doc => {
-            vscode.window.showTextDocument(doc);
-         });
+        if(item.path === ExtensionConstants.notFoundId){
+            vscode.commands.executeCommand(CommandConstants.openUrl, vscode.Uri.parse(ExtensionConstants.mezzuGithubUrl))
+        }
+        else{
+            vscode.workspace.openTextDocument(item.path).then(doc => {
+                vscode.window.showTextDocument(doc);
+            });
+        }
     });
-
 
     context.subscriptions.push(validateMezzurite);
     context.subscriptions.push(landingPageCommand);

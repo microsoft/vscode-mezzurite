@@ -25,7 +25,7 @@ export class MezzuriteAngularV1{
             files = await MezzuriteUtils.searchWorkspace(workspace, ExtensionConstants.pathForTypescriptFiles, ExtensionConstants.pathForNodeModules);
         }
         else{
-            var editedFilePath = "**/" + MezzuriteAngularV1.getFileNameFromPath(this.filePath);
+            var editedFilePath = "**/" + MezzuriteUtils.getFileNameFromPath(this.filePath);
             files = await MezzuriteUtils.searchWorkspace(workspace, editedFilePath, ExtensionConstants.pathForNodeModules);
         }
         let data: string;
@@ -46,14 +46,7 @@ export class MezzuriteAngularV1{
                 listOfComponents = await MezzuriteAngularV1.getListOfComponents(filePath, data, listOfComponents);
             }
         }
-        return MezzuriteAngularV1.outputObject(listOfComponents, listOfModules);
-    }
-
-    static outputObject(listOfComponents: any, listOfModules: any){
-        var outputObj: any = {};
-        outputObj["listOfComponents"] = listOfComponents;
-        outputObj["listOfModules"] = listOfModules;
-        return outputObj;
+        return MezzuriteUtils.createOutputObject(listOfComponents, listOfModules);
     }
 
     /**
@@ -302,7 +295,7 @@ export class MezzuriteAngularV1{
         // Look for 'template' and 'templateUrl' properties in decorator object
         var templateUrlProperty = MezzuriteAngularV1.getDecoratorProperty(decorator, ExtensionConstants.templateUrl);
         if(templateUrlProperty !== undefined && templateUrlProperty !== ""){
-            MezzuriteAngularV1.checkForTemplateUrlProperty(templateUrlProperty, componentObject);
+            await MezzuriteAngularV1.checkForTemplateUrlProperty(templateUrlProperty, componentObject);
         }
         var templateProperty = MezzuriteAngularV1.getDecoratorProperty(decorator, ExtensionConstants.template);
         if(templateProperty !== undefined && templateProperty !== ""){
@@ -320,8 +313,8 @@ export class MezzuriteAngularV1{
         var templateUrlValue = templateUrlProperty.getInitializer().compilerNode.text;
         if(templateUrlValue !== ""){
             componentObject.templateUrl = templateUrlValue;
-            var fileName: string = MezzuriteAngularV1.getFileNameFromPath(templateUrlValue);
-            var found = await MezzuriteAngularV1.parseExternalHTMLFile(fileName);
+            var fileName: string = MezzuriteUtils.getFileNameFromPath(templateUrlValue);
+            var found = await MezzuriteUtils.parseExternalHTMLFile(fileName, workspace);
             if(found){
                 componentObject.status = ExtensionConstants.marked;
             }
@@ -337,7 +330,7 @@ export class MezzuriteAngularV1{
         var templateValue = templateProperty.getInitializer().compilerNode.text;
         if(templateValue !== ""){
             componentObject.template = ExtensionConstants.htmlTemplateProvided;
-            if(MezzuriteAngularV1.verifyComponentMarking(templateValue)){
+            if(MezzuriteUtils.verifyComponentMarking(templateValue)){
                 componentObject.status = ExtensionConstants.marked;
             }
         }
@@ -373,40 +366,5 @@ export class MezzuriteAngularV1{
         return moduleObject;
     }
 
-    /**
-     * This method is used to get the html file name from file path
-     * @param filePath of the html template
-     * @return heml file name
-     */
-    static getFileNameFromPath(filePath: string){
-        var lastIndex = filePath.lastIndexOf('/') > -1? filePath.lastIndexOf('/') : filePath.lastIndexOf('\\');
-        return filePath.substring(lastIndex + 1, filePath.length);
-    }
-
-    /**
-     * This method is used to parse the html template for the components with templateUrl property
-     * @param filePath of the html template
-     * @return true, if parsed html is marked for tracking, otherwise, false
-     */
-    static async parseExternalHTMLFile(fileName: string){
-        var templateString: any;
-        // Get the html file and parse its contents for mezzurite markings
-        let files: any = await MezzuriteUtils.searchWorkspace(workspace,  "**/" + fileName, ExtensionConstants.pathForNodeModules);
-        if(files[0] && files[0].fsPath){
-            templateString = MezzuriteUtils.readFileFromWorkspace(files[0].fsPath, 'utf8');
-        }
-        return MezzuriteAngularV1.verifyComponentMarking(templateString);
-    }
-
-    /**
-     * This method verifies whether component is marked or not
-     * @param htmlString is the html template of the component
-     * @return true, if parsed html contains the mezzurite directive and component-title, otherwise, false
-     */
-    static verifyComponentMarking(htmlString: string){
-        if(htmlString && htmlString.indexOf(ExtensionConstants.mezzuriteDirective) > -1 && htmlString.indexOf(ExtensionConstants.componentTitleDirective)> -1){
-            return true;
-        }
-        return false;
-    }
+    
 }

@@ -1,4 +1,5 @@
 import * as fs from "fs";
+import {ExtensionConstants} from '../constants/extension-constants';
 
 export class MezzuriteUtils {
 
@@ -40,6 +41,56 @@ export class MezzuriteUtils {
             } 
         }
         return data;
+    }
+
+    /**
+     * This method verifies whether component is marked or not
+     * @param htmlString is the html template of the component
+     * @return true, if parsed html contains the mezzurite directive and component-title, otherwise, false
+     */
+    static verifyComponentMarking(htmlString: string){
+        if(htmlString && htmlString.indexOf(ExtensionConstants.mezzuriteDirective) > -1 && htmlString.indexOf(ExtensionConstants.componentTitleDirective)> -1){
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * This method is used to get the html file name from file path
+     * @param filePath of the html template
+     * @return heml file name
+     */
+    static getFileNameFromPath(filePath: string){
+        var lastIndex = filePath.lastIndexOf('/') > -1? filePath.lastIndexOf('/') : filePath.lastIndexOf('\\');
+        return filePath.substring(lastIndex + 1, filePath.length);
+    }
+
+    /**
+     * This method is used to parse the html template for the components with templateUrl property
+     * @param filePath of the html template
+     * @return true, if parsed html is marked for tracking, otherwise, false
+     */
+    static async parseExternalHTMLFile(fileName: string, workspace: any){
+        var templateString: any;
+        // Get the html file and parse its contents for mezzurite markings
+        let files: any = await MezzuriteUtils.searchWorkspace(workspace,  "**/" + fileName, ExtensionConstants.pathForNodeModules);
+        if(files[0] && files[0].fsPath){
+            templateString = MezzuriteUtils.readFileFromWorkspace(files[0].fsPath, 'utf8');
+        }
+        return MezzuriteUtils.verifyComponentMarking(templateString);
+    }
+
+    /**
+     * This method creates an output object to be displayed as results
+     * @param list of components
+     * @param list of modules
+     * @return output object
+     */
+    static createOutputObject(listOfComponents: any, listOfModules: any){
+        var outputObj: any = {};
+        outputObj["listOfComponents"] = listOfComponents;
+        outputObj["listOfModules"] = listOfModules;
+        return outputObj;
     }
 
 }
