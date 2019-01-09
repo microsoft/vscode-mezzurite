@@ -61,7 +61,17 @@ export class ComponentsProvider implements vscode.TreeDataProvider<ComponentItem
             }
 
             return componentItems;
-        } 
+        }else{
+			var message = new ComponentItem(ExtensionConstants.componentsNotFound, ExtensionConstants.notFoundId, "", ExtensionConstants.githubRepo,
+				vscode.TreeItemCollapsibleState.None);
+				message.command =  {
+					command: CommandConstants.trackComponentCommand,
+					title: '',
+					arguments: [message]
+				};
+			componentItems.push(message);
+			return componentItems;
+		} 
 
 		return [];
 	}
@@ -85,7 +95,7 @@ export class ComponentItem extends vscode.TreeItem {
 	}
 
 	get description(): string {
-		return this.label;
+		return "";
     }
     
     get pathName(): string {
