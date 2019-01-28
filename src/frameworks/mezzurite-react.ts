@@ -4,7 +4,7 @@ import {MezzuriteUtils} from '../utils/mezzurite-utils';
 import {ExtensionConstants} from '../constants/extension-constants';
 import { Project } from "ts-simple-ast";
 
-export class MezzuriteAngular{
+export class MezzuriteReact{
 
     private filePath: any;
 
@@ -15,8 +15,8 @@ export class MezzuriteAngular{
     /**
      * This method would execute the mezzurite framework-specific rules.
      * Rules:- Rules are 
-     * 1. Looking for marked and unmarked angular components
-     * 2. Looking for mezzurite import and export in all angular modules
+     * 1. Looking for marked and unmarked React components
+     * 2. Looking for mezzurite import and export in all React modules
      */
     async executeFrameworkSpecificRules(){
         let files: any;
@@ -36,21 +36,21 @@ export class MezzuriteAngular{
             // Read file contents
             data = MezzuriteUtils.readFileFromWorkspace(files[index].fsPath, 'utf8');
             
-            // Check if file contains angular module
-            if(MezzuriteAngular.fileContainsModule(data)){
-                listOfModules = await MezzuriteAngular.getListOfModules(filePath, data, listOfModules);
+            // Check if file contains React module
+            if(MezzuriteReact.fileContainsModule(data)){
+                listOfModules = await MezzuriteReact.getListOfModules(filePath, data, listOfModules);
             }
             
-            // Check if file contains angular component
-            if(MezzuriteAngular.fileContainsComponent(data)){
-                listOfComponents = await MezzuriteAngular.getListOfComponents(filePath, data, listOfComponents);
+            // Check if file contains React component
+            if(MezzuriteReact.fileContainsComponent(data)){
+                listOfComponents = await MezzuriteReact.getListOfComponents(filePath, data, listOfComponents);
             }
         }
         return MezzuriteUtils.createOutputObject(listOfComponents, listOfModules);
     }
 
     /**
-     * This method checks if file contains an an angular module or not
+     * This method checks if file contains an an React module or not
      * @param file data as string
      * @return Return true if found, otherwise false
      */
@@ -62,7 +62,7 @@ export class MezzuriteAngular{
     }
 
     /**
-     * This method checks if file contains an an angular component or not
+     * This method checks if file contains an an React component or not
      * @param file data as string
      * @return Return true if found, otherwise false
      */
@@ -95,7 +95,7 @@ export class MezzuriteAngular{
      * @return true, if sourec file contains mezzurite import statements
      */
     static containsMezzuriteImportStmt(sourceFile: any){
-        const importStatement = sourceFile.getImportDeclaration(ExtensionConstants.mezzuriteAngular);
+        const importStatement = sourceFile.getImportDeclaration(ExtensionConstants.mezzuriteReact);
         if(importStatement){
             return true;
         }
@@ -111,8 +111,8 @@ export class MezzuriteAngular{
         var classConstructors = decoratorClass.getConstructors();
         for(var index=0;index<classConstructors.length;index++){
             var constructor = classConstructors[index];
-            if(MezzuriteAngular.checkForRoutingServiceParam(constructor)){
-                if(MezzuriteAngular.checkForStartMethod(constructor)){
+            if(MezzuriteReact.checkForRoutingServiceParam(constructor)){
+                if(MezzuriteReact.checkForStartMethod(constructor)){
                     return true;
                 }
             };
@@ -153,28 +153,12 @@ export class MezzuriteAngular{
     }
 
     /**
-     * This method checks whether node contains mezzurite AngularPerf.forRoot() method or not
-     * @param moduleProperties is the node constisting of the properties of that module class
-     * @return true, if node contains mezzurite AngularPerf.forRoot() method
-     */
-    static containsAngularPerfForRoot(decorator: any){
-        var decoratorElements = MezzuriteAngular.getImportDecoratorElements(decorator);
-        for(var index=0; index< decoratorElements.length;index++){
-            var element = decoratorElements[index];
-            if(element.getKindName() === ExtensionConstants.callExpression && element.getText() === ExtensionConstants.angularPerfModule){
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /**
      * This method returns array of elements inside imports property in module decorator
      * @param decorator object
      * @return array of elements inside imports property in module decorator
      */
     static getImportDecoratorElements(decorator: any){
-        var importsObject = MezzuriteAngular.getDecoratorProperty(decorator, ExtensionConstants.importsText);
+        var importsObject = MezzuriteReact.getDecoratorProperty(decorator, ExtensionConstants.importsText);
         if(importsObject){
             var importsElements = importsObject.getInitializer().getElements();
             if(importsElements && importsElements.length > 0){
@@ -222,27 +206,27 @@ export class MezzuriteAngular{
     static async getListOfModules(filePath: string, data: string, listOfModules: any){
         var moduleDecoratorFound = false;
         // Initialize module output object
-        var moduleObject = MezzuriteAngular.initializeModuleObject();
+        var moduleObject = MezzuriteReact.initializeModuleObject();
         const project = new Project();
         const sourceFile = project.addExistingSourceFile(filePath);
         const classes = sourceFile.getClasses();
         // Check for a import statement
-        if(MezzuriteAngular.containsMezzuriteImportStmt(sourceFile)){
+        if(MezzuriteReact.containsMezzuriteImportStmt(sourceFile)){
             moduleObject.importStmt = true;
         }
         for(var i = 0;i <classes.length; i++){
             // Check for a valid NgModule decorator object
-            var decorator = MezzuriteAngular.getDecoratorByType(classes[i], ExtensionConstants.moduleDecoratorName);
+            var decorator = MezzuriteReact.getDecoratorByType(classes[i], ExtensionConstants.moduleDecoratorName);
             if(decorator !== undefined){
                 moduleDecoratorFound = true;
                 moduleObject.moduleName = classes[i].getName();
             }
             // Check for a forRoot() method
-            if(MezzuriteAngular.containsAngularPerfForRoot(decorator)){
+            if(MezzuriteReact.containsReactPerfForRoot(decorator)){
                 moduleObject.forRoot = true;
             }
             // Check for a router.start() method
-            if(MezzuriteAngular.containsRouterStart(classes[i])){
+            if(MezzuriteReact.containsRouterStart(classes[i])){
                 moduleObject.routerStart = true;
             }
             if(moduleObject.importStmt && moduleObject.forRoot && moduleObject.routerStart){
@@ -266,16 +250,16 @@ export class MezzuriteAngular{
     static async getListOfComponents(filePath: string, data: string, listOfComponents: any){
         var componentDecoratorFound = false;
         // Initialize component output object
-        var componentObject = MezzuriteAngular.initializeComponentObject();
-        const classes = MezzuriteAngular.getClassNodesFromSourceFile(filePath);
+        var componentObject = MezzuriteReact.initializeComponentObject();
+        const classes = MezzuriteReact.getClassNodesFromSourceFile(filePath);
         for(var i = 0;i < classes.length; i++){
             // Check for a valid decorator object
-            var decorator = MezzuriteAngular.getDecoratorByType(classes[i], ExtensionConstants.componentDecoratorName);
+            var decorator = MezzuriteReact.getDecoratorByType(classes[i], ExtensionConstants.componentDecoratorName);
             if(decorator !== undefined){
                 componentObject.filePath = filePath;
                 componentObject.componentName = classes[i].getName();
                 componentDecoratorFound = true;
-                componentObject = await MezzuriteAngular.verifyComponentsTemplate(decorator, componentObject);
+                componentObject = await MezzuriteReact.verifyComponentsTemplate(decorator, componentObject);
                 break;
             }
         }
@@ -293,13 +277,13 @@ export class MezzuriteAngular{
      */
     static async verifyComponentsTemplate(decorator: any, componentObject : any){
         // Look for 'template' and 'templateUrl' properties in decorator object
-        var templateUrlProperty = MezzuriteAngular.getDecoratorProperty(decorator, ExtensionConstants.templateUrl);
+        var templateUrlProperty = MezzuriteReact.getDecoratorProperty(decorator, ExtensionConstants.templateUrl);
         if(templateUrlProperty !== undefined && templateUrlProperty !== ""){
-            await MezzuriteAngular.checkForTemplateUrlProperty(templateUrlProperty, componentObject);
+            await MezzuriteReact.checkForTemplateUrlProperty(templateUrlProperty, componentObject);
         }
-        var templateProperty = MezzuriteAngular.getDecoratorProperty(decorator, ExtensionConstants.template);
+        var templateProperty = MezzuriteReact.getDecoratorProperty(decorator, ExtensionConstants.template);
         if(templateProperty !== undefined && templateProperty !== ""){
-            MezzuriteAngular.checkForTemplateProperty(templateProperty, componentObject);
+            MezzuriteReact.checkForTemplateProperty(templateProperty, componentObject);
         }
         return componentObject;
     }

@@ -1,5 +1,6 @@
 import {ExtensionConstants} from './constants/extension-constants';
-import {MezzuriteAngularV1} from './frameworks/mezzurite-angular';
+import {MezzuriteAngular} from './frameworks/mezzurite-angular';
+import {MezzuriteReact} from './frameworks/mezzurite-react';
 import {MezzuriteUtils} from './utils/mezzurite-utils';
 
 export class ExecuteMezzuriteFrameworkRules {
@@ -19,9 +20,10 @@ export class ExecuteMezzuriteFrameworkRules {
             case ExtensionConstants.mezzuriteAngularJs:
             break;
             case ExtensionConstants.mezzuriteAngular:
-                mezzuriteFramework = new MezzuriteAngularV1(this.filePath);
+                mezzuriteFramework = new MezzuriteAngular(this.filePath);
             break;
             case ExtensionConstants.mezzuriteReact:
+                mezzuriteFramework = new MezzuriteReact(this.filePath);
             break;
             default: console.log('Mezzurite framework name '+ this.frameworkName + ' or version '+ this.frameworkversion +' is invalid!');
         }
