@@ -51,7 +51,8 @@ You can also reach to this page by clicking on the Extensions icon in the Activi
 After a successful install, you'll see a Reload button. Clicking on this will restart VS Code to enable the extension.
 
 ## Limitations
-Currently tracking Components and Modules feature is only supported for mezzurite-angular framework.
+- Currently tracking Components and Modules feature is only supported for mezzurite-angular framework.
+- Explorer views are fixed and therefore are always visible. In the case of React, the modules section would not be needed.
 
 ## Contributing
 
