@@ -99,7 +99,7 @@
         "@types/node": "^8.10.25",
         "tslint": "^5.8.0",
         "typescript": "^2.9.2",
-        "vscode": "^1.1.21"
+        "vscode": "^1.1.22"
     },
     "dependencies": {
         "color": "^3.1.0",
