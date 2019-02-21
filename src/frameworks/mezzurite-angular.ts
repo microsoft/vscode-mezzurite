@@ -2,7 +2,7 @@ import { workspace } from 'vscode';
 import 'reflect-metadata';
 import { MezzuriteUtils } from '../utils/mezzurite-utils';
 import { ExtensionConstants } from '../constants/extension-constants';
-import { Project } from 'ts-simple-ast';
+import { Project } from 'ts-morph';
 
 export class MezzuriteAngular {
 
