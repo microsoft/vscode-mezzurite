@@ -1,12 +1,26 @@
 {
   "compilerOptions": {
+    "lib": [ "es6" ],
     "module": "commonjs",
-    "target": "es6",
+    "noImplicitAny": true,
+    "noImplicitReturns": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
     "outDir": "out",
-    "lib": [
-      "es6"
-    ],
+    "rootDir": "src",
     "sourceMap": true,
-    "rootDir": "src"
-  }
+    "target": "es6"
+  },
+  "include": [
+    "src"
+  ],
+  "exclude": [
+    "node_modules",
+    "**/**.test.ts",
+    "**/__mocks__/**"
+  ],
+  "references": [
+    { "path": "./client" },
+    { "path": "./server" }
+  ]
 }
