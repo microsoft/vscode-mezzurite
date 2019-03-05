@@ -4,7 +4,7 @@
  * ------------------------------------------------------------------------------------------ */
 
 import { join } from 'path';
-import { ExtensionContext, window, workspace, Uri, TextDocument, TreeViewExpansionEvent } from 'vscode';
+import { ExtensionContext } from 'vscode';
 import {
 	LanguageClient,
 	ServerOptions,

@@ -4,9 +4,9 @@
  * ------------------------------------------------------------------------------------------ */
 
 import {
-	createConnection,
-	TextDocuments,
-	ProposedFeatures,
+  createConnection,
+  TextDocuments,
+  ProposedFeatures,
   WorkspaceFolder
 } from 'vscode-languageserver';
 
