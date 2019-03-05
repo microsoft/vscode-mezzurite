@@ -1,26 +1,26 @@
 {
-	"compilerOptions": {
-		"lib": [ "es6" ],
-		"module": "commonjs",
-		"noImplicitAny": true,
-		"noImplicitReturns": true,
-		"noUnusedLocals": true,
-		"noUnusedParameters": true,
-		"outDir": "out",
-		"rootDir": "src",
-		"sourceMap": true,
-		"target": "es6"
-	},
-	"include": [
-		"src"
-	],
-	"exclude": [
-		"node_modules",
-		"**/**.test.ts",
-		"**/__mocks__/**"
-	],
-	"references": [
-		{ "path": "./client" },
-		{ "path": "./server" }
-	]
+  "compilerOptions": {
+    "lib": [ "es6" ],
+    "module": "commonjs",
+    "noImplicitAny": true,
+    "noImplicitReturns": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "outDir": "out",
+    "rootDir": "src",
+    "sourceMap": true,
+    "target": "es6"
+  },
+  "include": [
+    "src"
+  ],
+  "exclude": [
+    "node_modules",
+    "**/**.test.ts",
+    "**/__mocks__/**"
+  ],
+  "references": [
+    { "path": "./client" },
+    { "path": "./server" }
+  ]
 }
