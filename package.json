@@ -1,109 +1,47 @@
 {
-    "name": "mezzurite",
-    "displayName": "Mezzurite",
-    "description": "Instrument your application with Mezzurite SDK quickly and easily with this extension.",
-    "version": "2.0.1",
-    "publisher": "mezzurite-devs",
-    "author": {
-        "name": "Microsoft Corporation"
-    },
-    "engines": {
-        "vscode": "^1.28.0"
-    },
-    "categories": [
-        "Linters",
-        "Snippets"
-    ],
-    "activationEvents": [
-        "*"
-    ],
-    "main": "./out/extension",
-    "Mezzurite SDK Repository": "https://github.com/Microsoft/Mezzurite",
-    "bugs": {
-        "url": "https://github.com/Microsoft/vscode-mezzurite"
-    },
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/Microsoft/vscode-mezzurite"
-    },
-    "Future Features": "https://github.com/Microsoft/Mezzurite",
-    "license": "SEE LICENSE IN LICENSE",
-    "icon": "icon.png",
-    "keywords": [
-        "Microsoft",
-        "Angular",
-        "React",
-        "SPA",
-        "Single Page Application"
-    ],
-    "contributes": {
-        "menus": {
-            "view/item/context": [
-                {
-                    "command": "extension.trackComponent",
-                    "when": "view == componentsTreeView"
-                },
-                {
-                    "command": "extension.trackModule",
-                    "when": "view == modulesTreeView"
-                }
-            ]
-        },
-        "views": {
-            "explorer": [
-                {
-                    "id": "componentsTreeView",
-                    "name": "Mezzurite Component Tracking"
-                },
-                {
-                    "id": "modulesTreeView",
-                    "name": "Mezzurite Module Tracking"
-                }
-            ]
-        },
-        "commands": [
-            {
-                "command": "extension.validateMezzurite",
-                "title": "Validate Mezzurite Configuration"
-            },
-            {
-                "command": "extension.displayLandingPage",
-                "title": "Mezzurite Extension Guide"
-            },
-            {
-                "command": "extension.trackComponent",
-                "title": "Track Component"
-            },
-            {
-                "command": "extension.trackModule",
-                "title": "Track Module"
-            }
-        ],
-        "Keybindings": [
-            {
-                "command": "extension.validateMezzurite",
-                "key": "ctrl+alt+m",
-                "mac": "ctrl+alt+m"
-            }
-        ]
-    },
-    "scripts": {
-        "vscode:prepublish": "npm run compile",
-        "compile": "tsc -p ./",
-        "lint": "tslint -p ./",
-        "postinstall": "node ./node_modules/vscode/bin/install",
-        "test": "npm run compile && node ./node_modules/vscode/bin/test",
-        "watch": "tsc -watch -p ./"
-    },
-    "devDependencies": {
-        "@types/node": "^8.10.25",
-        "tslint": "^5.12.1",
-        "tslint-config-semistandard": "^7.0.0",
-        "typescript": "^3.3.3",
-        "vscode": "^1.1.29"
-    },
-    "dependencies": {
-        "reflect-metadata": "^0.1.12",
-        "ts-morph": "^1.1.0"
-    }
+	"name": "lsp-sample",
+	"description": "A language server example",
+	"author": "Microsoft Corporation",
+	"license": "MIT",
+	"version": "1.0.0",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/Microsoft/vscode-extension-samples"
+	},
+	"publisher": "vscode-samples",
+	"categories": [],
+	"keywords": [
+		"multi-root ready"
+	],
+	"engines": {
+		"vscode": "^1.31.1"
+	},
+	"activationEvents": [
+		"*"
+	],
+	"main": "./client/out/extension",
+	"contributes": {
+		"views": {
+			"explorer": [
+				{
+					"id": "mezzuriteComponentList",
+					"name": "Mezzurite Component Tracking"
+				}
+			]
+		}
+	},
+	"scripts": {
+		"compile": "tsc -b",
+		"lint": "tslint -p ./tslint.json",
+		"postinstall": "cd client && npm install && cd ../server && npm install && cd ..",
+		"test": "jest",
+		"vscode:prepublish": "cd client && npm run update-vscode && cd .. && npm run compile",
+		"watch": "tsc -b -w"
+	},
+	"devDependencies": {
+		"@types/node": "^11.9.4",
+		"tslint": "^5.12.1",
+		"tslint-config-semistandard": "^7.0.0",
+		"typescript": "^3.3.3333"
+	}
 }
