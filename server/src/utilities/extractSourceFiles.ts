@@ -1,5 +1,5 @@
 import { sync } from 'globby';
-import { join, normalize } from 'path';
+import { join } from 'path';
 
 function extractSourceFiles (rootDirectory: string): string[] {
   let normalized = rootDirectory;
