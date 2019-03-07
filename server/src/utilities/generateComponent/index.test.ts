@@ -42,4 +42,10 @@ describe('index.ts', () => {
     helpers.generateNgComponent = jest.fn(() => component);
     expect(generateComponent('ngComponent', 'filePath', sourceFile)).toMatchObject(component);
   });
+
+  it('should return the component when generateNgModule is not null', () => {
+    helpers.generateNgModule = jest.fn(() => component);
+    expect(generateComponent('ngModule', 'filePath', sourceFile)).toMatchObject(component);
+  });
+
 });
