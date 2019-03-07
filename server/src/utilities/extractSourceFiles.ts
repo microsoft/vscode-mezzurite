@@ -1,5 +1,5 @@
 import { sync } from 'globby';
-import { join, normalize } from 'path';
+import { join } from 'path';
 
 function extractSourceFiles (rootDirectory: string): string[] {
   let normalized = rootDirectory;
@@ -15,7 +15,7 @@ function extractSourceFiles (rootDirectory: string): string[] {
     normalized = normalized.substring(escapedColonIndex + 3);
   }
 
-  const files = sync([ join(normalize(normalized), '**', '*.+(js|jsx|ts|tsx)'), join('!**', 'node_modules') ]);
+  const files = sync([ join(normalized, '**', '*.+(js|jsx|ts|tsx)'), join('!**', 'node_modules') ]);
   return files;
 }
 
