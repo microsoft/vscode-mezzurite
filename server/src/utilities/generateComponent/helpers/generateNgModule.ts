@@ -1,6 +1,6 @@
 import { ClassDeclaration, Node, SyntaxKind, SourceFile } from 'ts-morph';
 
-import MezzuriteComponent from '../../../models/mezzuriteComponent';
+import MezzuriteComponent from '../../../models/MezzuriteComponent';
 
 function generateNgModule (filePath: string, sourceFile: SourceFile): MezzuriteComponent {
   let component = null;
