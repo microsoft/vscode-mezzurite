@@ -19,7 +19,7 @@ describe('index.ts', () => {
     addFilesFromTsConfig: false
   });
   const sourceFile = project.addExistingSourceFile(
-    join('.', 'server', 'src', 'utilities', 'generateComponent', 'helpers', '__mocks__', 'ngComponentInstrumented.js')
+    join('.', 'server', 'src', 'utilities', 'generateComponent', 'helpers', '__mocks__', 'ngComponentInstrumented.ts')
   );
 
   afterEach(() => {
