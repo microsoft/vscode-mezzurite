@@ -8,6 +8,10 @@ describe('generateNgComponent.ts', () => {
     addFilesFromTsConfig: false
   });
 
+  afterAll(() => {
+    jest.clearAllMocks();
+  });
+
   it('should return null when filePath is null', () => {
     expect(generateNgComponent(null, null)).toBeNull();
   });
@@ -73,6 +77,23 @@ describe('generateNgComponent.ts', () => {
         name: 'TemplateUrlInstrumentedComponent',
         type: 'ngComponent'
       });
+    project.removeSourceFile(sourceFile);
+  });
+
+  it('should generate a Mezzurite component from an ngModule file a bad templateUrl', () => {
+    const filePath = join('.', 'server', 'src', 'utilities', 'generateComponent', 'helpers', '__mocks__', 'ngComponentBadTemplateUrl.ts');
+    const sourceFile = project.addExistingSourceFile(filePath);
+    console.warn = jest.fn(() => undefined);
+    expect(generateNgComponent(filePath, sourceFile))
+      .toMatchObject({
+        checks: {
+          hasMezzuriteDirective: false
+        },
+        filePath,
+        name: 'BadTemplateUrlInstrumentedComponent',
+        type: 'ngComponent'
+      });
+    expect(console.warn).toHaveBeenCalledWith('Invalid path to templateUrl.');
     project.removeSourceFile(sourceFile);
   });
 });

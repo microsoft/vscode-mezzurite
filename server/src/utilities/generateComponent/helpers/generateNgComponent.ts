@@ -83,7 +83,7 @@ function containsMezzuriteDirective (filePath: string, sourceClass: ClassDeclara
             try {
               containsMezzuriteDirective = readFileSync(templateUrl).toString().indexOf('mezzurite') > -1;
             } catch {
-              // TODO: Graceful exit?
+              console.warn('Invalid path to templateUrl.');
             }
           }
         }
