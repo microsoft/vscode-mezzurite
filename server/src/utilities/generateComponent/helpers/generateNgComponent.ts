@@ -1,5 +1,5 @@
 import { readFileSync } from 'fs';
-import { join } from 'path';
+import { resolve } from 'path';
 import { ClassDeclaration, Node, SyntaxKind, SourceFile } from 'ts-morph';
 
 import MezzuriteComponent from '../../../models/MezzuriteComponent';
@@ -78,9 +78,8 @@ function getTemplate (decoratorArguments: Node[], filePath: string): string {
               return sibling.getKind() === SyntaxKind.StringLiteral;
             }));
             if (templateUrlValue != null) {
-              const fileBase = filePath.substring(0, filePath.lastIndexOf(`\\`));
               const fileExtension = templateUrlValue.getText().replace(/'/g, '');
-              const templateUrl = join(fileBase, fileExtension);
+              const templateUrl = resolve(filePath, '..', fileExtension);
 
               try {
                 template = readFileSync(templateUrl).toString();
