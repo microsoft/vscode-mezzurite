@@ -7,9 +7,7 @@
 })
 // @ts-ignore
 export class TemplateUrlInstrumentedComponent implements OnInit {
-
   public ngOnInit () {
     console.log('hello `Barrel` component');
   }
-
 }
