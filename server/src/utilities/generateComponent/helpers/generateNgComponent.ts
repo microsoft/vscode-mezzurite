@@ -47,7 +47,7 @@ function containsMezzuriteDirective (filePath: string, sourceClass: ClassDeclara
           const template = getTemplate(decoratorArgumentParameters, filePath);
 
           if (template != null) {
-            containsMezzuriteDirective = template.indexOf('mezzurite') > -1;
+            containsMezzuriteDirective = template.indexOf('mezzurite') > -1 && template.indexOf('component-title') > -1;
           }
         }
       }
