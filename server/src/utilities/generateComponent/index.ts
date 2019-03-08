@@ -11,6 +11,8 @@ function generateComponent (componentType: string, filePath: string, sourceFile:
       component = helpers.generateNgComponent(filePath, sourceFile);
     } else if (componentType === 'ngModule') {
       component = helpers.generateNgModule(filePath, sourceFile);
+    } else if (componentType === 'react') {
+      component = helpers.generateReact(filePath, sourceFile);
     }
   }
 
