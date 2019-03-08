@@ -1,6 +1,6 @@
-import { Node, SyntaxKind, SourceFile, SyntaxList, Identifier } from 'ts-morph';
+import { Node, SyntaxKind, SourceFile } from 'ts-morph';
 
-import MezzuriteComponent from '../../../models/mezzuriteComponent';
+import MezzuriteComponent from '../../../models/MezzuriteComponent';
 
 function generateReact (filePath: string, sourceFile: SourceFile): MezzuriteComponent {
   let component = null;
