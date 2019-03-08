@@ -9,6 +9,8 @@ function generateComponent (componentType: string, filePath: string, sourceFile:
   if (componentType != null && filePath != null && sourceFile != null) {
     if (componentType === 'ngComponent') {
       component = helpers.generateNgComponent(filePath, sourceFile);
+    } else if (componentType === 'ngModule') {
+      component = helpers.generateNgModule(filePath, sourceFile);
     }
   }
 
