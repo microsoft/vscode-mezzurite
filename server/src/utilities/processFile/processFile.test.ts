@@ -50,10 +50,19 @@ describe('processFile.ts', () => {
     });
   });
 
-  it('should resolve the promise with a null value when the filePath is null', () => {
+  it('should reject the promise when the filePath is null', () => {
     const filePath = null;
-    return processFile(filePath, project).then((component: MezzuriteComponent) => {
-      expect(component).toBeNull();
+    expect.assertions(1);
+    return processFile(filePath, project).catch((error: Error) => {
+      expect(error).toEqual(new Error('The file path or project cannot be null.'));
+    });
+  });
+
+  it('should reject the promise when the project is null', () => {
+    const filePath = 'some file path';
+    expect.assertions(1);
+    return processFile(filePath, null).catch((error: Error) => {
+      expect(error).toEqual(new Error('The file path or project cannot be null.'));
     });
   });
 });

@@ -6,8 +6,8 @@ import getComponentType from '../getComponentType';
 import generateComponent from '../generateComponent';
 
 function processFile (filePath: string, project: Project): Promise<MezzuriteComponent> {
-  return new Promise((resolve: Function) => {
-    if (filePath != null) {
+  return new Promise((resolve: Function, reject: Function) => {
+    if (filePath != null && project != null) {
       readFile(filePath, (error: Error, data: Buffer) => {
         if (error == null) {
           let componentData: MezzuriteComponent = null;
@@ -19,11 +19,11 @@ function processFile (filePath: string, project: Project): Promise<MezzuriteComp
           }
           resolve(componentData);
         } else {
-          resolve(null);
+          reject(error);
         }
       });
     } else {
-      resolve(null);
+      reject(new Error('The file path or project cannot be null.'));
     }
   });
 }

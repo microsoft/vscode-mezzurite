@@ -44,7 +44,13 @@ connection.onInitialized(() => {
   connection.workspace.getWorkspaceFolders().then((folders: WorkspaceFolder[]) => {
     const files = combineWorkspaceFolders(folders);
     Promise.all(
-      files.map((filePath: string) => processFile(filePath, project))
+      files.map((filePath: string) => {
+        return processFile(filePath, project)
+          .catch((error: Error) => {
+            console.warn(`Unable to process ${filePath}: ${error}`);
+            return null;
+          });
+      })
     )
     .then((results: MezzuriteComponent[]) => {
       components = results.filter((component: MezzuriteComponent) => component != null);
