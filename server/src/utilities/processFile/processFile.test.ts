@@ -45,8 +45,9 @@ describe('processFile.ts', () => {
 
   it('should resolve the promise with a null value when the file path does not exist', () => {
     const filePath = 'does not exist';
-    return processFile(filePath, project).then((component: MezzuriteComponent) => {
-      expect(component).toBeNull();
+    expect.assertions(1);
+    return processFile(filePath, project).catch((error: Error) => {
+      expect(error).toBeTruthy();
     });
   });
 
