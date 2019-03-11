@@ -41,17 +41,20 @@ function generateReact (filePath: string, sourceFile: SourceFile): MezzuriteComp
 
 function getExportContents (sourceFile: SourceFile): Node {
   let exportContents = null;
-  const fileContents = sourceFile.getChildSyntaxList();
 
-  if (fileContents != null) {
-    const exportAssignment = fileContents.getFirstChildByKind(SyntaxKind.ExportAssignment);
-    if (exportAssignment != null) {
-      const defaultKeyword = exportAssignment.getChildren().find((child: Node) => {
-        return child.getKind() === SyntaxKind.DefaultKeyword;
-      });
+  if (sourceFile != null) {
+    const fileContents = sourceFile.getChildSyntaxList();
 
-      if (defaultKeyword != null) {
-        exportContents = defaultKeyword.getNextSibling();
+    if (fileContents != null) {
+      const exportAssignment = fileContents.getFirstChildByKind(SyntaxKind.ExportAssignment);
+      if (exportAssignment != null) {
+        const defaultKeyword = exportAssignment.getChildren().find((child: Node) => {
+          return child.getKind() === SyntaxKind.DefaultKeyword;
+        });
+
+        if (defaultKeyword != null) {
+          exportContents = defaultKeyword.getNextSibling();
+        }
       }
     }
   }
