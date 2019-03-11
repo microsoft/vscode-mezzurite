@@ -22,9 +22,7 @@ function generateReact (filePath: string, sourceFile: SourceFile): MezzuriteComp
           name = lastIdentifier.getText();
         }
 
-        if (exportContents.getText().indexOf('withMezzurite') > -1) {
-          hasWithMezzurite = true;
-        }
+        hasWithMezzurite = exportContents.getText().indexOf('withMezzurite') > -1;
       }
 
       component = {
