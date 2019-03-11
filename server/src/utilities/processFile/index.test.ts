@@ -4,7 +4,7 @@ import Project from 'ts-morph';
 import MezzuriteComponent from '../../models/MezzuriteComponent';
 import * as generateComponent from '../generateComponent';
 import * as getComponentType from '../getComponentType';
-import processFile from './processFile';
+import processFile from '.';
 
 describe('processFile.ts', () => {
   const project = new Project({
