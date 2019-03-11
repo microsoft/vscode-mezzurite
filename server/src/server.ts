@@ -3,6 +3,7 @@
  * Licensed under the MIT License. See License.txt in the project root for license information.
  * ------------------------------------------------------------------------------------------ */
 
+import Project from 'ts-morph';
 import {
   createConnection,
   TextDocuments,
@@ -11,6 +12,8 @@ import {
 } from 'vscode-languageserver';
 
 import combineWorkspaceFolders from './utilities/combineWorkspaceFolders';
+import processFile from './utilities/processFile/processFile';
+import MezzuriteComponent from './models/MezzuriteComponent';
 
 // Create a connection for the server. The connection uses Node's IPC as a transport.
 // Also include all preview / proposed LSP features.
@@ -19,6 +22,11 @@ const connection = createConnection(ProposedFeatures.all);
 // Create a simple text document manager. The text document manager
 // supports full document sync only
 const documents: TextDocuments = new TextDocuments();
+
+let components: MezzuriteComponent[] = [];
+const project = new Project({
+  addFilesFromTsConfig: false
+});
 
 connection.onInitialize(() => {
   return {
@@ -35,8 +43,20 @@ connection.onInitialize(() => {
 connection.onInitialized(() => {
   connection.workspace.getWorkspaceFolders().then((folders: WorkspaceFolder[]) => {
     const files = combineWorkspaceFolders(folders);
-    // For now, output the file paths to the console.
-    files.forEach(file => connection.console.log(file));
+    Promise.all(
+      files.map((filePath: string) => {
+        return processFile(filePath, project)
+          .catch((error: Error) => {
+            console.warn(`Unable to process ${filePath}: ${error}`);
+            return null;
+          });
+      })
+    )
+    .then((results: MezzuriteComponent[]) => {
+      components = results.filter((component: MezzuriteComponent) => component != null);
+      connection.sendNotification('custom/mezzuriteComponents', { value: components });
+    })
+    .catch((error: Error) => connection.console.warn(error.message));
   });
 });
 
