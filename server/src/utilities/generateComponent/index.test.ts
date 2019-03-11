@@ -48,4 +48,9 @@ describe('index.ts', () => {
     expect(generateComponent('ngModule', 'filePath', sourceFile)).toMatchObject(component);
   });
 
+  it('should return the component when generateReact is not null', () => {
+    helpers.generateReact = jest.fn(() => component);
+    expect(generateComponent('react', 'filePath', sourceFile)).toMatchObject(component);
+  });
+
 });
