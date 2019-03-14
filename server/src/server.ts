@@ -3,6 +3,7 @@
  * Licensed under the MIT License. See License.txt in the project root for license information.
  * ------------------------------------------------------------------------------------------ */
 
+import { join } from 'path';
 import Project from 'ts-morph';
 import {
   createConnection,
@@ -11,9 +12,10 @@ import {
   WorkspaceFolder
 } from 'vscode-languageserver';
 
-import combineWorkspaceFolders from './utilities/combineWorkspaceFolders';
-import processFile from './utilities/processFile/processFile';
+import onFileChanged from './events/onFileChanged';
 import MezzuriteComponent from './models/MezzuriteComponent';
+import combineWorkspaceFolders from './utilities/combineWorkspaceFolders';
+import processFile from './utilities/processFile';
 
 // Create a connection for the server. The connection uses Node's IPC as a transport.
 // Also include all preview / proposed LSP features.
@@ -58,6 +60,22 @@ connection.onInitialized(() => {
     })
     .catch((error: Error) => connection.console.warn(error.message));
   });
+});
+
+connection.onNotification('custom/fileChanged', (filePath: string) => {
+  onFileChanged(components, filePath, project)
+    .then((updatedComponents: MezzuriteComponent[]) => {
+      components = updatedComponents;
+      connection.sendNotification('custom/mezzuriteComponents', { value: components });
+    })
+    .catch((error: Error) => console.warn(error.message));
+});
+
+connection.onNotification('custom/fileDeleted', (filePath: string) => {
+  components = components.filter((component: MezzuriteComponent) => {
+    return join(component.filePath) !== join(filePath);
+  });
+  connection.sendNotification('custom/mezzuriteComponents', { value: components });
 });
 
 documents.listen(connection);
