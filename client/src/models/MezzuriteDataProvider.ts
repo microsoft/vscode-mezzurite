@@ -17,23 +17,25 @@ class MezzuriteDataProvider implements TreeDataProvider<TreeItem> {
       return new Promise((resolve) => {
         resolve(this.components
           .map((component: MezzuriteComponent) => new MezzuriteTreeItem(component, this.rootPath))
-          .sort((first: MezzuriteTreeItem, second: MezzuriteTreeItem) => {
-            if (first.fulfilled === second.fulfilled) {
-              if (first.iconPath === second.iconPath) {
-                return first.label.localeCompare(second.label);
-              } else {
-                return first.iconPath.localeCompare(second.iconPath);
-              }
-            } else {
-              return Number(second.fulfilled) - Number(first.fulfilled);
-            }
-          })
+          .sort(this.mezzuriteTreeItemComparator)
         );
       });
     } else {
       return new Promise((resolve) => {
         resolve(element.children);
       });
+    }
+  }
+
+  private mezzuriteTreeItemComparator (first: MezzuriteTreeItem, second: MezzuriteTreeItem): number {
+    if (first.fulfilled === second.fulfilled) {
+      if (first.iconPath === second.iconPath) {
+        return first.label.localeCompare(second.label);
+      } else {
+        return first.iconPath.localeCompare(second.iconPath);
+      }
+    } else {
+      return Number(second.fulfilled) - Number(first.fulfilled);
     }
   }
 
