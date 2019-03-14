@@ -4,12 +4,16 @@
  * ------------------------------------------------------------------------------------------ */
 
 import { join } from 'path';
-import { ExtensionContext } from 'vscode';
+import { ExtensionContext, window, TreeViewExpansionEvent, workspace, TextDocument, Uri } from 'vscode';
 import {
 	LanguageClient,
 	ServerOptions,
 	TransportKind
 } from 'vscode-languageclient';
+
+import MezzuriteDataProvider from './models/MezzuriteDataProvider';
+import MezzuriteComponent from './models/MezzuriteComponent';
+import MezzuriteTreeItem from './models/MezzuriteTreeItem';
 
 let client: LanguageClient;
 
@@ -41,10 +45,45 @@ export function activate (context: ExtensionContext) {
 		undefined
   );
 
+  let treeView = window.createTreeView('mezzuriteComponentList', {
+    treeDataProvider: new MezzuriteDataProvider([], context.extensionPath)
+  });
+
 	// Start the client. This will also launch the server
   client.start();
 
-  client.onReady().catch(() => client.info('The client could not be initialized.'));
+  client.onReady()
+    .catch(() => client.info('The client could not be initialized.'))
+    .then(() => {
+      client.onNotification('custom/mezzuriteComponents', (message: { value: MezzuriteComponent[] }) => {
+        treeView = window.createTreeView('mezzuriteComponentList', {
+          treeDataProvider: new MezzuriteDataProvider(message.value, context.extensionPath)
+        });
+
+        treeView.onDidCollapseElement(onTreeViewExpansionEvent);
+
+        treeView.onDidExpandElement(onTreeViewExpansionEvent);
+      });
+    });
+
+  const fileWatcher = workspace.createFileSystemWatcher('**/*.{ts,js,tsx,jsx}', false, false, false);
+
+  fileWatcher.onDidChange((event: Uri) => {
+    client.sendNotification('custom/fileChanged', event.fsPath);
+  });
+
+  fileWatcher.onDidDelete((event: Uri) => {
+    client.sendNotification('custom/fileDeleted', event.fsPath);
+  });
+
+  function onTreeViewExpansionEvent (event: TreeViewExpansionEvent<MezzuriteTreeItem>): void {
+    if (event.element.resourceUri != null) {
+      workspace.openTextDocument(event.element.resourceUri.path)
+        .then((document: TextDocument) => {
+          window.showTextDocument(document);
+        });
+    }
+  }
 }
 
 export function deactivate (): Thenable<void> | undefined {
