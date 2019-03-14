@@ -19,7 +19,8 @@ class ConditionTreeItem extends TreeItem {
   }
 
   get iconPath (): string {
-    return join(this.rootPath, 'client', 'res', 'icons', `${this.isMet ? 'tracked' : 'notTracked'}.svg`);
+    const iconType = this.isMet ? 'tracked' : 'notTracked';
+    return join(this.rootPath, 'client', 'res', 'icons', `${iconType}.svg`);
   }
 }
 

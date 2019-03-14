@@ -43,7 +43,9 @@ function generateIconPath (componentType: string, fulfilled: boolean, rootPath: 
     if (!fulfilled) {
       iconKind = 'Light';
     }
-    iconPath = join(rootPath, 'client', 'res', 'icons', `${componentType + iconKind}.svg`);
+
+    const iconType = componentType + iconKind;
+    iconPath = join(rootPath, 'client', 'res', 'icons', `${iconType}.svg`);
   }
 
   return iconPath;
