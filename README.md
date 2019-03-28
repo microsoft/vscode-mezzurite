@@ -16,16 +16,11 @@ This plugin improves the Mezzurite SDK implementation experience.  The Mezzurite
 
  Updates in Component Tracking Status on the fly whenever a component file or its external html template is changed, deleted or a new component is created.
 
- ##### Demo
- ![Components Demo](https://github.com/Microsoft/vscode-mezzurite/blob/master/resources/components_demo.gif?raw=true)
  
  ####  Modules Tracking
  Displaying the modules configured with mezzurite performance markers to capture ALT and VLT for the application code currently active in editor workspace.
 
- Updates in Modules Tracking Status on the fly whenever a module file is changed, deleted or a new module is created. Hovering over the module name displays the missing condition to track that module.
-
- ##### Demo
- ![Modules Demo](https://github.com/Microsoft/vscode-mezzurite/blob/master/resources/modules_demo.gif?raw=true)
+ Updates in Modules Tracking Status on the fly whenever a module file is changed, deleted or a new module is created. 
 
 ## RoadMap
 We are working on to provide the following features:-
@@ -35,7 +30,6 @@ We are working on to provide the following features:-
  
  #### Verifying Loggers
  This feature verifies whether logging options for captured metrics is enabled or not. This also provides suggestions on required mandatory properties in logging config.
-
 
 
 ## Configuration
@@ -51,8 +45,7 @@ You can also reach to this page by clicking on the Extensions icon in the Activi
 After a successful install, you'll see a Reload button. Clicking on this will restart VS Code to enable the extension.
 
 ## Limitations
-- Currently tracking Components and Modules feature is only supported for mezzurite-angular framework.
-- Explorer views are fixed and therefore are always visible. In the case of React, the modules section would not be needed.
+- Explorer views are fixed and therefore are always visible.
 
 ## Contributing
 
