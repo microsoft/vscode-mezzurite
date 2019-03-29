@@ -1,5 +1,5 @@
 {
-  "name": "vscode-mezzurite",
+  "name": "mezzurite",
   "description": "Instrument your application with the Mezzurite SDK quickly and easily with this extension.",
   "displayName": "Mezzurite",
   "author": "Microsoft Corporation",
