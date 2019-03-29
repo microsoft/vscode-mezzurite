@@ -1,10 +1,10 @@
 {
-  "name": "vscode-mezzurite",
+  "name": "mezzurite",
   "description": "Instrument your application with the Mezzurite SDK quickly and easily with this extension.",
   "displayName": "Mezzurite",
   "author": "Microsoft Corporation",
   "license": "MIT",
-  "version": "0.0.0",
+  "version": "3.0.0",
   "repository": {
     "url": "https://github.com/Microsoft/vscode-mezzurite",
     "type": "git"
@@ -12,7 +12,7 @@
   "bugs": {
     "url": "https://github.com/Microsoft/vscode-mezzurite"
   },
-  "publisher": "vscode-samples",
+  "publisher": "mezzurite-devs",
   "categories": [
     "Linters",
     "Snippets"
