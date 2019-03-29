@@ -14,13 +14,8 @@ This plugin improves the Mezzurite SDK implementation experience.  The Mezzurite
  #### Components Tracking
  Displaying the marked and unmarked components for performance tracking from the application code currently active in editor workspace.
 
- Updates in Component Tracking Status on the fly whenever a component file or its external html template is changed, deleted or a new component is created.
-
- 
  ####  Modules Tracking
  Displaying the modules configured with mezzurite performance markers to capture ALT and VLT for the application code currently active in editor workspace.
-
- Updates in Modules Tracking Status on the fly whenever a module file is changed, deleted or a new module is created. 
 
 ## RoadMap
 We are working on to provide the following features:-
